@@ -1,25 +1,14 @@
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+var articles = new Dictionary<int, Article>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    { 1, new Article(1, "Banana", 12.1m) },
+    { 2, new Article(2, "apple", 2.1m) },
+    { 3, new Article(3, "bread", 5m) }
+};
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
+app.MapGet("/articles/{id}", (int id) =>
+    !articles.ContainsKey(id) ? Results.NotFound() : Results.Ok(articles[id]));
 
 app.Run();

@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dapper", "Dapper", "{382FCF3D-AF06-4AC5-AC05-65BDB15CAF52}"
 	ProjectSection(SolutionItems) = preProject
 		tye.yaml = tye.yaml
+		k6\test.js = k6\test.js
 	EndProjectSection
 EndProject
 Global

@@ -1,25 +1,38 @@
+using Dapr.Client;
+
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+var storeName = "ShoppingCart";
+using var client = new DaprClientBuilder().Build();
+
+var articlesHttpClient = DaprClient.CreateInvokeHttpClient("articles");
+
+app.MapPost("/shoppingCarts", async (NewShoppingCartRequest newShoppingCartCommand) =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    var shoppingCart = new ShoppingCart(newShoppingCartCommand.UserId);
 
-app.UseHttpsRedirection();
+    await client.SaveStateAsync(storeName, shoppingCart.Id.ToString(), shoppingCart);
+    return Results.Ok(ShoppingCartModel.From(shoppingCart));
+});
 
-app.UseAuthorization();
+app.MapPost("/shoppingCarts/{shoppingCartId}/items", async (Guid shoppingCartId, AddShoppingArticleCommand command) =>
+{
+    var article = await articlesHttpClient.GetFromJsonAsync<ArticleDto>($"/articles/{command.ArticleId}");
+    if (article == null)
+    {
+        return Results.NotFound();
+    }
 
-app.MapControllers();
+    var shoppingCart = await client.GetStateAsync<ShoppingCart>(storeName, shoppingCartId.ToString());
+
+    if (shoppingCart == null)
+    {
+        return Results.NotFound();
+    }
+    
+    shoppingCart.AddArticle(command.ArticleId, command.Quantity, article.Price);
+    return Results.Ok(ShoppingCartModel.From(shoppingCart));
+});
 
 app.Run();

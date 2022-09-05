@@ -7,12 +7,17 @@
 name: dapr
 extensions:
   - name: dapr
+ingress:
+  - name: ingress
+    bindings:
+      - port: 8080
+        protocol: https
+    rules:
+      - path: /sc
+        service: dapr-shopingcart
 services:
   - name: dapr-shopingcart
     project: Dapr.ShopingCart/Dapr.ShopingCart.csproj
-    bindings:
-      - port: 7000
-        protocol: https
   - name: dapr-tickets
     project: Dapr.Tickets/Dapr.Tickets.csproj
   - name: dapr-articles

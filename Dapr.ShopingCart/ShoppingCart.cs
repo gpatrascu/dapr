@@ -3,13 +3,15 @@ public class ShoppingCart
     public ShoppingCart(string userId)
     {
         UserId = userId;
+        this.Id = Guid.NewGuid();
+        this.Lines = new List<ShoppingCartLine>();
     }
 
     public string UserId { get; }
 
-    public IList<ShoppingCartLine> Lines { get; } = new List<ShoppingCartLine>();
+    public IList<ShoppingCartLine> Lines { get; set; } 
 
-    public Guid Id { get; } = new();
+    public Guid Id { get; set; } 
 
     public void AddArticle(string articleId, int quantity, decimal articlePrice)
     {

@@ -8,7 +8,7 @@ public class ShoppingCartModel
             Lines = shoppingCart.Lines.Select(line => new ShoppingCartLineModel()
             {
                 ArticleId = line.ArticleId,
-                Quantity = line.Quantity, 
+                Quantity = line.Quantity,
                 Price = line.Price
             }).ToList()
         };

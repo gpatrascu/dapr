@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Dapr.Client;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,13 +13,12 @@ app.MapPost("/shoppingCarts", async (NewShoppingCartRequest newShoppingCartComma
     var shoppingCart = new ShoppingCart(newShoppingCartCommand.UserId);
 
     await client.SaveStateAsync(storeName, shoppingCart.Id.ToString(), shoppingCart);
-    return Results.Ok(ShoppingCartModel.From(shoppingCart));
+    return Results.Created(string.Empty, ShoppingCartModel.From(shoppingCart));
 });
 
 app.MapPost("/shoppingCarts/{shoppingCartId}/items",
     async (Guid shoppingCartId, AddShoppingArticleCommand command) =>
     {
-        Console.WriteLine("request made for id {0}", shoppingCartId);
         var article = await articlesHttpClient.GetFromJsonAsync<ArticleDto>($"/articles/{command.ArticleId}");
         if (article == null)
         {
@@ -34,17 +32,31 @@ app.MapPost("/shoppingCarts/{shoppingCartId}/items",
             return Results.NotFound();
         }
         
-        var serialize = JsonSerializer.Serialize(shoppingCart);
-
-        Console.WriteLine(serialize);
-        
         shoppingCart.AddArticle(command.ArticleId, command.Quantity, article.Price);
 
-        bool trySaveStateAsync = await client.TrySaveStateAsync(storeName, shoppingCartId.ToString(), shoppingCart, etag);
+        await client.TrySaveStateAsync(storeName, shoppingCartId.ToString(), shoppingCart, etag);
 
-        Console.WriteLine(trySaveStateAsync);
+        return Results.Created(string.Empty, ShoppingCartModel.From(shoppingCart));
+    });
 
-        return Results.Ok(ShoppingCartModel.From(shoppingCart));
+app.MapPost("/shoppingCarts/{shoppingCartId}/checkout",
+    async (Guid shoppingCartId) =>
+    {
+        var (shoppingCart, etag) = await client.GetStateAndETagAsync<ShoppingCart>(storeName, shoppingCartId.ToString());
+
+        if (shoppingCart == null)
+        {
+            return Results.NotFound();
+        }
+        shoppingCart.Checkout();
+        
+        await client.TrySaveStateAsync(storeName, shoppingCartId.ToString(), shoppingCart, etag);
+
+        await client.PublishEventAsync("pubsub", "checkout", 
+            ShoppingCartWasCheckoutEvent.From(shoppingCart));
+        
+
+        return Results.Created(string.Empty, ShoppingCartModel.From(shoppingCart));
     });
 
 app.MapGet("/shoppingCarts/{shoppingCartId}", async (Guid shoppingCartId) =>

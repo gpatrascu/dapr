@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dapper", "Dapper", "{382FCF
 	ProjectSection(SolutionItems) = preProject
 		tye.yaml = tye.yaml
 		k6\test.js = k6\test.js
+		components\pubsub.yaml = components\pubsub.yaml
+		components\statestore.yaml = components\statestore.yaml
 	EndProjectSection
 EndProject
 Global

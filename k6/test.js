@@ -8,16 +8,30 @@ export default function () {
     AddArticle(shoppingCartId, "3", 1);
     
     GetShoppingCart(shoppingCartId);
+    
+    Checkout(shoppingCartId);
+}
+
+
+function Checkout(shoppingCartId){
+    const url = `https://localhost:8080/sc/shoppingCarts/${shoppingCartId}/checkout`;
+    const res = http.post(url);
+
+    console.log(res);
+
+    check(res, {
+        'checkout shopping cart response code was 201': (res) => res.status === 201,
+    });
 }
 
 function GetShoppingCart(shoppingCartId){
     const url = `https://localhost:8080/sc/shoppingCarts/${shoppingCartId}`;
     const res = http.get(url);
     
-    console.log(res);
+    //console.log(res);
 
     check(res, {
-        'response code was 200': (res) => res.status === 200,
+        'get shopping cart response code was 200': (res) => res.status === 200,
     });
 }
 
@@ -36,7 +50,7 @@ function CreateShoppingCart(userId) {
     const res = http.post(createShoppingCartUrl, payload, params);
 
     check(res, {
-        'response code was 200': (res) => res.status === 200,
+        'create shopping cart response code was 201': (res) => res.status === 201,
     });
 
     return res.json().id;
@@ -60,7 +74,7 @@ function AddArticle(shoppingCartId, articleId, quantity) {
     //console.log(res);
 
     check(res, {
-        'response code was 200': (res) => res.status === 200,
+        'add article response code was 201': (res) => res.status === 201,
     });
 }
 

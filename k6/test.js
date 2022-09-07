@@ -1,8 +1,8 @@
 import http from 'k6/http';
-import {check} from 'k6';
+import {check, sleep} from 'k6';
 
 export default function () {
-    let shoppingCartId = CreateShoppingCart("aaa");
+    let shoppingCartId = CreateShoppingCart(`user_${__VU}_${__ITER}`);
     AddArticle(shoppingCartId, "1", 1);
     AddArticle(shoppingCartId, "2", 2);
     AddArticle(shoppingCartId, "3", 1);
@@ -10,11 +10,13 @@ export default function () {
     GetShoppingCart(shoppingCartId);
     
     Checkout(shoppingCartId);
+
+    sleep(1);
 }
 
 
 function Checkout(shoppingCartId){
-    const url = `https://localhost:8080/sc/shoppingCarts/${shoppingCartId}/checkout`;
+    const url = `https://localhost:8082/sc/shoppingCarts/${shoppingCartId}/checkout`;
     const res = http.post(url);
 
     console.log(res);
@@ -25,7 +27,7 @@ function Checkout(shoppingCartId){
 }
 
 function GetShoppingCart(shoppingCartId){
-    const url = `https://localhost:8080/sc/shoppingCarts/${shoppingCartId}`;
+    const url = `https://localhost:8082/sc/shoppingCarts/${shoppingCartId}`;
     const res = http.get(url);
     
     //console.log(res);
@@ -36,7 +38,7 @@ function GetShoppingCart(shoppingCartId){
 }
 
 function CreateShoppingCart(userId) {
-    const createShoppingCartUrl = 'https://localhost:8080/sc/shoppingCarts';
+    const createShoppingCartUrl = 'https://localhost:8082/sc/shoppingCarts';
     const payload = JSON.stringify({
         userId: userId
     });
@@ -57,7 +59,7 @@ function CreateShoppingCart(userId) {
 }
 
 function AddArticle(shoppingCartId, articleId, quantity) {
-    const url = `https://localhost:8080/sc/shoppingCarts/${shoppingCartId}/items`;
+    const url = `https://localhost:8082/sc/shoppingCarts/${shoppingCartId}/items`;
     const payload = JSON.stringify({
         articleId: articleId,
         quantity: quantity

@@ -10,7 +10,7 @@ extensions:
 ingress:
   - name: ingress
     bindings:
-      - port: 8080
+      - port: 8082
         protocol: https
     rules:
       - path: /sc
@@ -18,7 +18,9 @@ ingress:
 services:
   - name: dapr-shopingcart
     project: Dapr.ShopingCart/Dapr.ShopingCart.csproj
-  - name: dapr-tickets
-    project: Dapr.Tickets/Dapr.Tickets.csproj
+  - name: dapr-financial
+    project: Dapr.Financial/Dapr.Financial.csproj
   - name: dapr-articles
     project: Dapr.Articles/Dapr.Articles.csproj
+  - name: dapr-inventory
+    project: Dapr.Inventory/Dapr.Inventory.csproj

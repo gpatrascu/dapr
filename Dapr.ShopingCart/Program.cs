@@ -19,19 +19,21 @@ app.MapPost("/shoppingCarts", async (NewShoppingCartRequest newShoppingCartComma
 app.MapPost("/shoppingCarts/{shoppingCartId}/items",
     async (Guid shoppingCartId, AddShoppingArticleCommand command) =>
     {
-        var article = await articlesHttpClient.GetFromJsonAsync<ArticleDto>($"/articles/{command.ArticleId}");
+        var article = await articlesHttpClient
+            .GetFromJsonAsync<ArticleDto>($"/articles/{command.ArticleId}");
         if (article == null)
         {
             return Results.NotFound();
         }
 
-        var (shoppingCart, etag) = await client.GetStateAndETagAsync<ShoppingCart>(storeName, shoppingCartId.ToString());
+        var (shoppingCart, etag) = await client
+            .GetStateAndETagAsync<ShoppingCart>(storeName, shoppingCartId.ToString());
 
         if (shoppingCart == null)
         {
             return Results.NotFound();
         }
-        
+
         shoppingCart.AddArticle(command.ArticleId, command.Quantity, article.Price);
 
         await client.TrySaveStateAsync(storeName, shoppingCartId.ToString(), shoppingCart, etag);
@@ -42,19 +44,19 @@ app.MapPost("/shoppingCarts/{shoppingCartId}/items",
 app.MapPost("/shoppingCarts/{shoppingCartId}/checkout",
     async (Guid shoppingCartId) =>
     {
-        var (shoppingCart, etag) = await client.GetStateAndETagAsync<ShoppingCart>(storeName, shoppingCartId.ToString());
+        var (shoppingCart, etag) =
+            await client.GetStateAndETagAsync<ShoppingCart>(storeName, shoppingCartId.ToString());
 
         if (shoppingCart == null)
         {
             return Results.NotFound();
         }
-        shoppingCart.Checkout();
-        
-        await client.TrySaveStateAsync(storeName, shoppingCartId.ToString(), shoppingCart, etag);
 
-        await client.PublishEventAsync("pubsub", "checkout", 
-            ShoppingCartWasCheckoutEvent.From(shoppingCart));
+        shoppingCart.Checkout();
+        await client.TrySaveStateAsync(storeName, shoppingCartId.ToString(), shoppingCart, etag);
         
+        await client.PublishEventAsync("pubsub", "checkout",
+            ShoppingCartWasCheckoutEvent.From(shoppingCart));
 
         return Results.Created(string.Empty, ShoppingCartModel.From(shoppingCart));
     });
@@ -71,4 +73,4 @@ app.MapGet("/shoppingCarts/{shoppingCartId}", async (Guid shoppingCartId) =>
     return Results.Ok(ShoppingCartModel.From(shoppingCart));
 });
 
-app.Run();
+await app.RunAsync();

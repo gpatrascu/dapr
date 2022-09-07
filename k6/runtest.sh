@@ -1,1 +1,1 @@
-k6 run test.js --insecure-skip-tls-verify
+k6 run test.js --insecure-skip-tls-verify --vus 50 --duration 30s

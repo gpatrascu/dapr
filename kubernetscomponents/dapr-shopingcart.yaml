@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    dapr.io/app-id: dapr-shopingcart
+    dapr.io/app-port: "80"
+    dapr.io/config: appconfig
+    dapr.io/enabled: "true"
+    deployment.kubernetes.io/revision: "6"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"dapr.io/app-id":"dapr-shopingcart","dapr.io/app-port":"80","dapr.io/config":"appconfig","dapr.io/enabled":"true","deployment.kubernetes.io/revision":"6"},"creationTimestamp":"2022-09-11T14:01:05Z","generation":8,"labels":{"app.kubernetes.io/name":"dapr-shopingcart","app.kubernetes.io/part-of":"dapr"},"name":"dapr-shopingcart","namespace":"default","resourceVersion":"448219","uid":"22c54ab3-eaab-4109-bf3e-ef5deb9597a5"},"spec":{"progressDeadlineSeconds":600,"replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app.kubernetes.io/name":"dapr-shopingcart"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"annotations":{"dapr.io/app-id":"dapr-shopingcart","dapr.io/app-port":"80","dapr.io/enabled":"true","kubectl.kubernetes.io/restartedAt":"2022-09-11T18:12:14Z"},"creationTimestamp":null,"labels":{"app.kubernetes.io/name":"dapr-shopingcart","app.kubernetes.io/part-of":"dapr"}},"spec":{"containers":[{"env":[{"name":"DOTNET_LOGGING__CONSOLE__DISABLECOLORS","value":"true"},{"name":"ASPNETCORE_URLS","value":"http://*"},{"name":"PORT","value":"80"},{"name":"SERVICE__DAPR-SHOPINGCART__PROTOCOL","value":"http"},{"name":"SERVICE__DAPR-SHOPINGCART__PORT","value":"80"},{"name":"SERVICE__DAPR-SHOPINGCART__HOST","value":"dapr-shopingcart"},{"name":"SERVICE__DAPR-FINANCIAL__PROTOCOL","value":"http"},{"name":"SERVICE__DAPR-FINANCIAL__PORT","value":"80"},{"name":"SERVICE__DAPR-FINANCIAL__HOST","value":"dapr-financial"},{"name":"SERVICE__DAPR-ARTICLES__PROTOCOL","value":"http"},{"name":"SERVICE__DAPR-ARTICLES__PORT","value":"80"},{"name":"SERVICE__DAPR-ARTICLES__HOST","value":"dapr-articles"},{"name":"SERVICE__DAPR-INVENTORY__PROTOCOL","value":"http"},{"name":"SERVICE__DAPR-INVENTORY__PORT","value":"80"},{"name":"SERVICE__DAPR-INVENTORY__HOST","value":"dapr-inventory"}],"image":"containerregistrygeorgepatrascudaprdemo.azurecr.io/dapr-shopingcart:1.0.0","imagePullPolicy":"Always","name":"dapr-shopingcart","ports":[{"containerPort":80,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}}},"status":{"availableReplicas":1,"conditions":[{"lastTransitionTime":"2022-09-11T14:01:23Z","lastUpdateTime":"2022-09-11T14:01:23Z","message":"Deployment has minimum availability.","reason":"MinimumReplicasAvailable","status":"True","type":"Available"},{"lastTransitionTime":"2022-09-11T14:01:05Z","lastUpdateTime":"2022-09-11T18:12:20Z","message":"ReplicaSet \"dapr-shopingcart-5875946f7d\" has successfully progressed.","reason":"NewReplicaSetAvailable","status":"True","type":"Progressing"}],"observedGeneration":8,"readyReplicas":1,"replicas":1,"updatedReplicas":1}}
+  creationTimestamp: "2022-09-11T14:01:05Z"
+  generation: 9
+  labels:
+    app.kubernetes.io/name: dapr-shopingcart
+    app.kubernetes.io/part-of: dapr
+  name: dapr-shopingcart
+  namespace: default
+  resourceVersion: "448710"
+  uid: 22c54ab3-eaab-4109-bf3e-ef5deb9597a5
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dapr-shopingcart
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        dapr.io/app-id: dapr-shopingcart
+        dapr.io/app-port: "80"
+        dapr.io/enabled: "true"
+        dapr.io/config: appconfig
+        kubectl.kubernetes.io/restartedAt: "2022-09-11T18:12:14Z"
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: dapr-shopingcart
+        app.kubernetes.io/part-of: dapr
+    spec:
+      containers:
+      - env:
+        - name: DOTNET_LOGGING__CONSOLE__DISABLECOLORS
+          value: "true"
+        - name: ASPNETCORE_URLS
+          value: http://*
+        - name: PORT
+          value: "80"
+        - name: SERVICE__DAPR-SHOPINGCART__PROTOCOL
+          value: http
+        - name: SERVICE__DAPR-SHOPINGCART__PORT
+          value: "80"
+        - name: SERVICE__DAPR-SHOPINGCART__HOST
+          value: dapr-shopingcart
+        - name: SERVICE__DAPR-FINANCIAL__PROTOCOL
+          value: http
+        - name: SERVICE__DAPR-FINANCIAL__PORT
+          value: "80"
+        - name: SERVICE__DAPR-FINANCIAL__HOST
+          value: dapr-financial
+        - name: SERVICE__DAPR-ARTICLES__PROTOCOL
+          value: http
+        - name: SERVICE__DAPR-ARTICLES__PORT
+          value: "80"
+        - name: SERVICE__DAPR-ARTICLES__HOST
+          value: dapr-articles
+        - name: SERVICE__DAPR-INVENTORY__PROTOCOL
+          value: http
+        - name: SERVICE__DAPR-INVENTORY__PORT
+          value: "80"
+        - name: SERVICE__DAPR-INVENTORY__HOST
+          value: dapr-inventory
+        image: containerregistrygeorgepatrascudaprdemo.azurecr.io/dapr-shopingcart:1.0.0
+        imagePullPolicy: Always
+        name: dapr-shopingcart
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2022-09-11T14:01:23Z"
+    lastUpdateTime: "2022-09-11T14:01:23Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2022-09-11T14:01:05Z"
+    lastUpdateTime: "2022-09-11T18:12:20Z"
+    message: ReplicaSet "dapr-shopingcart-5875946f7d" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 9
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1

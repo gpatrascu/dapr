@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    dapr.io/app-id: dapr-financial
+    dapr.io/app-port: "80"
+    dapr.io/enabled: "true"
+    deployment.kubernetes.io/revision: "2"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"dapr.io/app-id":"dapr-financial","dapr.io/app-port":"80","dapr.io/enabled":"true"},"labels":{"app.kubernetes.io/name":"dapr-financial","app.kubernetes.io/part-of":"dapr"},"name":"dapr-financial","namespace":"default"},"spec":{"replicas":1,"selector":{"matchLabels":{"app.kubernetes.io/name":"dapr-financial"}},"template":{"metadata":{"annotations":{"dapr.io/app-id":"dapr-financial","dapr.io/app-port":"80","dapr.io/enabled":"true"},"labels":{"app.kubernetes.io/name":"dapr-financial","app.kubernetes.io/part-of":"dapr"}},"spec":{"containers":[{"env":[{"name":"DOTNET_LOGGING__CONSOLE__DISABLECOLORS","value":"true"},{"name":"ASPNETCORE_URLS","value":"http://*"},{"name":"PORT","value":"80"},{"name":"SERVICE__DAPR-FINANCIAL__PROTOCOL","value":"http"},{"name":"SERVICE__DAPR-FINANCIAL__PORT","value":"80"},{"name":"SERVICE__DAPR-FINANCIAL__HOST","value":"dapr-financial"},{"name":"SERVICE__DAPR-SHOPINGCART__PROTOCOL","value":"http"},{"name":"SERVICE__DAPR-SHOPINGCART__PORT","value":"80"},{"name":"SERVICE__DAPR-SHOPINGCART__HOST","value":"dapr-shopingcart"},{"name":"SERVICE__DAPR-ARTICLES__PROTOCOL","value":"http"},{"name":"SERVICE__DAPR-ARTICLES__PORT","value":"80"},{"name":"SERVICE__DAPR-ARTICLES__HOST","value":"dapr-articles"},{"name":"SERVICE__DAPR-INVENTORY__PROTOCOL","value":"http"},{"name":"SERVICE__DAPR-INVENTORY__PORT","value":"80"},{"name":"SERVICE__DAPR-INVENTORY__HOST","value":"dapr-inventory"}],"image":"containerregistrygeorgepatrascudaprdemo.azurecr.io/dapr-financial:1.0.0","imagePullPolicy":"Always","name":"dapr-financial","ports":[{"containerPort":80}]}]}}}}
+  creationTimestamp: "2022-09-11T14:01:05Z"
+  generation: 2
+  labels:
+    app.kubernetes.io/name: dapr-financial
+    app.kubernetes.io/part-of: dapr
+  name: dapr-financial
+  namespace: default
+  resourceVersion: "434697"
+  uid: 68f7e942-45ec-459c-baff-917ba3995932
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dapr-financial
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        dapr.io/app-id: dapr-financial
+        dapr.io/app-port: "80"
+        dapr.io/enabled: "true"
+        dapr.io/config: appconfig
+        kubectl.kubernetes.io/restartedAt: "2022-09-11T17:35:05Z"
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: dapr-financial
+        app.kubernetes.io/part-of: dapr
+    spec:
+      containers:
+      - env:
+        - name: DOTNET_LOGGING__CONSOLE__DISABLECOLORS
+          value: "true"
+        - name: ASPNETCORE_URLS
+          value: http://*
+        - name: PORT
+          value: "80"
+        - name: SERVICE__DAPR-FINANCIAL__PROTOCOL
+          value: http
+        - name: SERVICE__DAPR-FINANCIAL__PORT
+          value: "80"
+        - name: SERVICE__DAPR-FINANCIAL__HOST
+          value: dapr-financial
+        - name: SERVICE__DAPR-SHOPINGCART__PROTOCOL
+          value: http
+        - name: SERVICE__DAPR-SHOPINGCART__PORT
+          value: "80"
+        - name: SERVICE__DAPR-SHOPINGCART__HOST
+          value: dapr-shopingcart
+        - name: SERVICE__DAPR-ARTICLES__PROTOCOL
+          value: http
+        - name: SERVICE__DAPR-ARTICLES__PORT
+          value: "80"
+        - name: SERVICE__DAPR-ARTICLES__HOST
+          value: dapr-articles
+        - name: SERVICE__DAPR-INVENTORY__PROTOCOL
+          value: http
+        - name: SERVICE__DAPR-INVENTORY__PORT
+          value: "80"
+        - name: SERVICE__DAPR-INVENTORY__HOST
+          value: dapr-inventory
+        image: containerregistrygeorgepatrascudaprdemo.azurecr.io/dapr-financial:1.0.0
+        imagePullPolicy: Always
+        name: dapr-financial
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2022-09-11T14:01:17Z"
+    lastUpdateTime: "2022-09-11T14:01:17Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2022-09-11T14:01:05Z"
+    lastUpdateTime: "2022-09-11T17:35:11Z"
+    message: ReplicaSet "dapr-financial-7c966cd58" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 2
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1

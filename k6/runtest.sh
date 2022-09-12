@@ -1,1 +1,1 @@
-k6 run test.js --insecure-skip-tls-verify --vus 50 --duration 30s
+k6 run test.js --insecure-skip-tls-verify -e DaprUrl="https://localhost:8082/sc"  --vus 50 --duration 30s

@@ -1,0 +1,1 @@
+k6 run test.js --insecure-skip-tls-verify -e DaprUrl="https://localhost:8082/sc"

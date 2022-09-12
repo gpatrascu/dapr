@@ -16,7 +16,8 @@ export default function () {
 
 
 function Checkout(shoppingCartId){
-    const url = `https://localhost:8082/sc/shoppingCarts/${shoppingCartId}/checkout`;
+    const baseUrl = `${__ENV.DaprUrl}`;
+    const url = `${baseUrl}/shoppingCarts/${shoppingCartId}/checkout`;
     const res = http.post(url);
 
     console.log(res);
@@ -27,7 +28,9 @@ function Checkout(shoppingCartId){
 }
 
 function GetShoppingCart(shoppingCartId){
-    const url = `https://localhost:8082/sc/shoppingCarts/${shoppingCartId}`;
+    const baseUrl = `${__ENV.DaprUrl}`;
+
+    const url = `${baseUrl}/shoppingCarts/${shoppingCartId}`;
     const res = http.get(url);
     
     //console.log(res);
@@ -38,7 +41,8 @@ function GetShoppingCart(shoppingCartId){
 }
 
 function CreateShoppingCart(userId) {
-    const createShoppingCartUrl = 'https://localhost:8082/sc/shoppingCarts';
+    const baseUrl = `${__ENV.DaprUrl}`;
+    const createShoppingCartUrl = `${baseUrl}/shoppingCarts`;
     const payload = JSON.stringify({
         userId: userId
     });
@@ -59,7 +63,8 @@ function CreateShoppingCart(userId) {
 }
 
 function AddArticle(shoppingCartId, articleId, quantity) {
-    const url = `https://localhost:8082/sc/shoppingCarts/${shoppingCartId}/items`;
+    const baseUrl = `${__ENV.DaprUrl}`;
+    const url = `${baseUrl}/shoppingCarts/${shoppingCartId}/items`;
     const payload = JSON.stringify({
         articleId: articleId,
         quantity: quantity
